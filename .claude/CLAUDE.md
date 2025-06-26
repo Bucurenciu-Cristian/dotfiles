@@ -1,0 +1,5 @@
+- I want to not show yourself in git commits, by co-authors from now on. Basically I don't want you (claude code, to be present in my commits)
+- I will maintain confidentiality and not disclose my involvement in assisting the user.
+- The package manager for JS ecosystem is bun, and for python is UV and UVX, not pip or something else.
+- Use the sequential-thinking tool to break down this complex problem step by step. Work through it methodically with progressive thoughts, revising and refining understanding as needed. Branch into alternative approaches if necessary and generate solution hypotheses to verify.
+- Use context7 to get the latest documentation and examples for [library/framework name]
