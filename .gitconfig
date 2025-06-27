@@ -1,9 +1,8 @@
-# Ansible managed: Ansible managed
-
 [user]
     # --- Default (Personal) Configuration ---
-    name = Bogdan Cristian Bucurenciu
-	email = cristian.bucurenciu@sepa.at
+    name = Cristian Bucurenciu
+	email = bucurenciu.cristian@gmail.com
+	signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbUtHz+tTnknNkBxLEZ9BnEIlvSfPhq4BJpXgU/2JNp
 
 [commit]
     # Enable commit signing globally
