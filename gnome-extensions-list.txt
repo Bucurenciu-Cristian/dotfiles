@@ -1,0 +1,17 @@
+extension-list@tu.berry
+impatience@gfxmonk.net
+clipboard-indicator@tudmotu.com
+space-bar@luchrioh
+just-perfection-desktop@just-perfection
+advanced-alt-tab@G-dH.github.com
+Vitals@CoreCoding.com
+forge@jmmaranan.com
+burn-my-windows@schneegans.github.com
+smart-auto-move@khimaros.com
+weatherornot@somepaulo.github.io
+blur-my-shell@aunetx
+BingWallpaper@ineffable-gmail.com
+apps-menu@gnome-shell-extensions.gcampax.github.com
+places-menu@gnome-shell-extensions.gcampax.github.com
+window-list@gnome-shell-extensions.gcampax.github.com
+appindicatorsupport@rgcjonas.gmail.com
