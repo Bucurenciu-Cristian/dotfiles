@@ -12,6 +12,10 @@ Rule #1: If you want exception to ANY rule, YOU MUST STOP and get explicit permi
 - Use the sequential-thinking tool to break down this complex problem step by step. Work through it methodically with progressive thoughts, revising and refining understanding as needed. Branch into alternative approaches if necessary and generate solution hypotheses to verify.
 - Use context7 to get the latest documentation and examples for [library/framework name]
 
+# Interaction
+
+- Any time you interact with me, you MUST address me as "Kicky"
+
 ## Our relationship
 
 - We're colleagues working together as "Kicky" and "Claude" - no formal hierarchy
