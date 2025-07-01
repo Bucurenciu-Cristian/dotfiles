@@ -1,0 +1,23 @@
+{
+  "theme": "GitHub",
+  "selectedAuthType": "oauth-personal",
+  "preferredEditor": "cursor",
+  "checkpointing": {
+    "enabled": true
+  },
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "bunx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "context7": {
+      "command": "bunx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "browser-tools": {
+      "command": "bunx",
+      "args": ["-y", "@agentdeskai/browser-tools-mcp@1.2.0"],
+      "enabled": true
+    }
+  }
+}
