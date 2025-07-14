@@ -1,3 +1,0 @@
-#!/bin/bash
-# Switch to ASUS monitor (DP-2) - Single monitor mode
-exec ~/bin/monitors/monitor-dbus.py DP-2

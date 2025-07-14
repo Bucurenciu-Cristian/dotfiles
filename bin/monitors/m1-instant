@@ -1,3 +1,0 @@
-#!/bin/bash
-# Instant switch to Iiyama monitor (DP-4) using gdctl
-exec ~/bin/monitors/gdctl-instant.py DP-4

@@ -1,71 +1,99 @@
-# Monitor Configuration Switcher for GNOME/Wayland
+# Instant Monitor Switching for GNOME/Wayland ⚡
 
-A simple command-line tool to switch between different monitor configurations on Fedora with GNOME running on Wayland.
+A powerful command-line solution for instant monitor switching on Fedora with GNOME/Wayland. Features safety validation, environment detection, and sub-second switching using GNOME's official `gdctl` utility.
 
-## Installation
+## ✨ Features
 
-The scripts are already installed in `~/bin/monitors/`. The aliases have been added to your `.zshrc` file.
+- **Instant Switching**: Sub-second monitor configuration changes
+- **Safety Validation**: Prevents switching to disconnected monitors
+- **Environment Detection**: Automatically detects home/laptop/partial setups
+- **Custom Layouts**: Optimized triple monitor configuration with maximum refresh rates
+- **Automatic Backups**: Safe configuration management with rollback capability
+- **Smart Aliases**: Simple commands for daily use
 
-To use the aliases immediately without restarting your terminal:
+## 🚀 Quick Start
+
+### Essential Commands
 ```bash
-source ~/.zshrc
+m0          # Switch to ASUS monitor (3440x1440@100Hz)
+m1          # Switch to Iiyama monitor (3440x1440@180Hz) 
+m3          # Custom triple monitor layout (all monitors)
+mavailable  # Show only connected monitors
 ```
 
-## Usage
+### Monitor Layout (Triple Mode)
+- **LG (DP-3)**: Portrait left, 2560x1080@60Hz
+- **Iiyama (DP-4)**: Primary top-right, 3440x1440@180Hz
+- **ASUS (DP-2)**: Secondary bottom-right, 3440x1440@100Hz
 
-### Available Commands
+## 📖 Usage
 
-- `mlist` - List all connected monitors and available profiles
-- `m1` - Switch to single monitor mode (Iiyama 34" only)
-- `m2` - Switch to dual monitor mode (both 34" monitors)
-- `m3` - Switch to triple monitor mode (all external monitors)
-- `mall` - Enable all monitors (including laptop screen)
-- `mreset` - Restore the last working configuration
-
-### Examples
-
+### Basic Commands
 ```bash
-# See what monitors are connected
-mlist
+# Switch to specific monitors
+gdctl-instant.py DP-2      # ASUS monitor
+gdctl-instant.py DP-4      # Iiyama monitor  
+gdctl-instant.py eDP-1     # Laptop display
+gdctl-instant.py triple    # Custom triple layout
 
-# Switch to single monitor
-m1
-
-# Go back to previous configuration
-mreset
+# Information commands
+gdctl-instant.py show      # Current configuration
+gdctl-instant.py available # Connected monitors only
+gdctl-instant.py list      # All available monitors
 ```
 
-## How It Works
+### Environment Detection
+The script automatically detects your current setup:
+- **🏠 Full home setup**: All 3 external monitors connected
+- **💻 Laptop mode**: Only built-in display available
+- **⚡ Partial setup**: Some external monitors connected
 
-1. The tool modifies the GNOME display configuration file (`~/.config/monitors.xml`)
-2. It creates backups before making any changes
-3. Changes are applied by triggering a GNOME settings reload
+## 🛡️ Safety Features
 
-## Important Notes
+### Monitor Presence Validation
+```bash
+# When away from home setup
+m0  # ❌ Monitor DP-2 (ASUS) is not connected!
+    # ℹ️  You appear to be on laptop-only mode (away from home setup)
+```
 
-- **Wayland Limitation**: Unlike X11, Wayland doesn't allow real-time monitor switching via xrandr
-- **Apply Changes**: Changes might take a few seconds to apply, or you may need to log out/in
-- **Backups**: All configuration changes are backed up in `~/bin/monitors/configs/`
-- **Safety**: You can always restore the previous configuration with `mreset`
+### Smart Error Messages
+- Clear feedback about missing monitors
+- Suggestions for available alternatives
+- Environment context awareness
 
-## Monitor Information
+## 🔧 Technical Details
 
-Your setup:
-- **DP-2**: ASUSTek 34" monitor (3440x1440)
-- **DP-3**: LG UltraWide 29" monitor (2560x1080)
-- **DP-4**: Iiyama 34" monitor (3440x1440) - Primary
-- **eDP-1**: Built-in laptop display (2880x1920)
+### Requirements
+- Fedora Linux with GNOME on Wayland
+- `gdctl` utility (included with GNOME)
+- Python 3 (for the script)
 
-## Troubleshooting
+### Monitor Configuration
+- **ASUS (DP-2)**: VG34VQEL1A, 3440x1440@100Hz
+- **Iiyama (DP-4)**: PL3481WQ, 3440x1440@180Hz  
+- **LG (DP-3)**: LG ULTRAWIDE, 2560x1080@60Hz
+- **Laptop (eDP-1)**: Built-in display, 2880x1920@60Hz
 
-If changes don't apply:
-1. Try logging out and back in
-2. Use `mreset` to restore previous configuration
-3. Check the backup files in `~/bin/monitors/configs/`
+### Automatic Backups
+- Configuration backed up before each change
+- Stored in `~/bin/monitors/configs/`
+- Timestamped for easy restoration
 
-## Future Improvements
+## 📂 Installation
 
-- Add custom positioning for multi-monitor setups
-- Support for portrait/landscape orientation switching
-- More robust configuration parsing
-- GUI interface option
+Already installed and configured! Aliases are available in your shell:
+```bash
+source ~/.zshrc  # Reload aliases if needed
+```
+
+## 🎯 Perfect for
+
+- **Daily workflow**: Quick switching between monitor setups
+- **Remote work**: Safe operation when away from home setup  
+- **Gaming/productivity**: Instant layout changes
+- **Multi-monitor optimization**: Maximum refresh rates automatically
+
+---
+
+**Powered by GNOME's gdctl** | **Instant switching** | **Production ready**

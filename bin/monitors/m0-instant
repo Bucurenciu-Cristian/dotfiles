@@ -1,3 +1,0 @@
-#!/bin/bash
-# Instant switch to ASUS monitor (DP-2) using gdctl
-exec ~/bin/monitors/gdctl-instant.py DP-2

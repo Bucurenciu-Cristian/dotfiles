@@ -1,3 +1,0 @@
-#!/bin/bash
-# Switch to single monitor mode
-exec ~/bin/monitors/gnome-monitors.py single

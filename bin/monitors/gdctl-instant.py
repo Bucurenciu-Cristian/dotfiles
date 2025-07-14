@@ -70,6 +70,7 @@ def get_connected_monitors():
     
     return connected
 
+
 def backup_config():
     """Save current configuration to backup"""
     backup_dir = Path.home() / "bin" / "monitors" / "configs"
@@ -236,6 +237,7 @@ def restore_triple_monitor():
         print("   • Iiyama (DP-4): Primary, 3440x1440@180Hz")
         print("   • ASUS (DP-2): Secondary, 3440x1440@100Hz")
         print("🚀 All monitors at maximum refresh rates!")
+        
     else:
         print(f"❌ Failed to restore triple monitor setup: {error}")
     
@@ -288,7 +290,9 @@ def main():
     elif command == "available":
         show_available_monitors()
     elif command == "triple":
-        restore_triple_monitor()
+        success = restore_triple_monitor()
+        if not success:
+            sys.exit(1)
     elif command in MONITORS:
         success = switch_to_single_monitor(command)
         if not success:
