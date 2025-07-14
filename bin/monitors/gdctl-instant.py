@@ -9,31 +9,35 @@ import sys
 import time
 from pathlib import Path
 
-# Monitor configurations
+# Monitor configurations with maximum refresh rates
 MONITORS = {
     'DP-2': {
         'name': 'ASUS 34" UltraWide',
         'vendor': 'AUS',
         'product': 'VG34VQEL1A',
-        'description': 'ASUS monitor with 3440x1440 resolution'
+        'description': 'ASUS monitor with 3440x1440 resolution',
+        'max_mode': '3440x1440@100.006'
     },
     'DP-3': {
         'name': 'LG 29" UltraWide', 
         'vendor': 'GSM',
         'product': 'LG ULTRAWIDE',
-        'description': 'LG monitor with 2560x1080 resolution'
+        'description': 'LG monitor with 2560x1080 resolution',
+        'max_mode': '2560x1080@60.000'
     },
     'DP-4': {
         'name': 'Iiyama 34" UltraWide',
         'vendor': 'IVM',
         'product': 'PL3481WQ', 
-        'description': 'Iiyama monitor with 3440x1440 resolution'
+        'description': 'Iiyama monitor with 3440x1440 resolution',
+        'max_mode': '3440x1440@179.981'
     },
     'eDP-1': {
         'name': 'Built-in Laptop Display',
         'vendor': 'CSO',
         'product': '0x1319',
-        'description': 'Built-in laptop screen with 2880x1920 resolution'
+        'description': 'Built-in laptop screen with 2880x1920 resolution',
+        'max_mode': '2880x1920@60.000'
     }
 }
 
@@ -110,18 +114,19 @@ def switch_to_single_monitor(monitor_id, with_backup=True, verbose=True):
     
     if verbose:
         print(f"🔄 Switching to: {monitor['name']} ({monitor_id})")
-        print(f"   {monitor['description']}")
+        print(f"   {monitor['description']} at {monitor['max_mode']}")
     
     # Backup current configuration
     if with_backup:
         backup_config()
     
-    # Apply single monitor configuration using gdctl
+    # Apply single monitor configuration using gdctl with maximum refresh rate
+    max_mode = monitor['max_mode']
     if verbose:
-        print("🔄 Applying configuration...")
-        cmd = f"gdctl set --verbose --logical-monitor --primary --monitor {monitor_id}"
+        print(f"🔄 Applying configuration at maximum refresh rate ({max_mode})...")
+        cmd = f"gdctl set --verbose --logical-monitor --primary --monitor {monitor_id} --mode {max_mode}"
     else:
-        cmd = f"gdctl set --logical-monitor --primary --monitor {monitor_id}"
+        cmd = f"gdctl set --logical-monitor --primary --monitor {monitor_id} --mode {max_mode}"
     
     success, output, error = run_command(cmd, show_output=verbose)
     
