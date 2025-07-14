@@ -1,0 +1,27 @@
+#!/bin/bash
+# Reset monitor configuration to last backup
+
+BACKUP_DIR="$HOME/bin/monitors/configs"
+MONITORS_XML="$HOME/.config/monitors.xml"
+
+# Find the most recent backup
+LATEST_BACKUP=$(ls -t "$BACKUP_DIR"/monitors-backup-*.xml 2>/dev/null | head -1)
+
+if [ -z "$LATEST_BACKUP" ]; then
+    echo "No backup configuration found!"
+    exit 1
+fi
+
+echo "Restoring monitor configuration from:"
+echo "  $LATEST_BACKUP"
+
+# Restore the backup
+cp "$LATEST_BACKUP" "$MONITORS_XML"
+
+# Trigger reload
+gsettings set org.gnome.desktop.interface enable-animations false
+sleep 0.1
+gsettings set org.gnome.desktop.interface enable-animations true
+
+echo "Monitor configuration restored!"
+echo "Changes should apply within a few seconds."

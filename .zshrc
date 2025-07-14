@@ -88,7 +88,6 @@ plugins=(
   zsh-syntax-highlighting
   zsh-autosuggestions
   z
-  dotenv
   uv
   pre-commit
 )
@@ -117,17 +116,48 @@ case ":$PATH:" in
 esac
 
 # Editor configuration
-export EDITOR="zed"
-export VISUAL="zed"
+export EDITOR="cursor"
+export VISUAL="cursor"
 
 # Other environment variables
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
 # Project aliases (from bashrc)
+alias claude-mcp-settings='zed ~/.claude/settings.local.json'
+
+# Dev folder projects
 alias claude-work-sepa='cd /home/kicky/dev/sepa && claude'
-alias claude-work-windows-draft='cd /home/kicky/dev/windows-draft; cursor .; claude'
-alias claude-work-flo='cd /home/kicky/dev/Flo-manager/flo_lets_fit; cursor .; claude'
-alias claude-work-flo-scripts='cd /home/kicky/dev/Flo-manager/scripts; cursor .; claude'
+alias claude-work-sepa-hausfabrik='cd /home/kicky/dev/sepa/hausfabrik; cursor .; claude'
+alias claude-work-sepa-thelia-react='cd /home/kicky/dev/sepa/thelia-react; cursor .; claude'
+alias claude-work-sepa-kubernetes-fastapi='cd /home/kicky/dev/sepa/kubernetes-fastapi; cursor .; claude'
+alias claude-work-scenextras='cd /home/kicky/dev/sceneXtras; cursor .; claude'
+alias claude-work-claude-hooks='cd /home/kicky/dev/claude-hooks; cursor .; claude'
+
+# Work folder projects
+alias claude-work-windows-draft='cd /home/kicky/work/01-active/windows-draft; cursor .; claude'
+alias claude-work-flo='cd /home/kicky/work/01-active/Flo-manager/flo_lets_fit; cursor .; claude'
+alias claude-work-clinic='cd /home/kicky/work/01-active/clinic-scheduler; cursor .; claude'
+alias claude-work-devfusion='cd /home/kicky/work/01-active/devfusion-portfolio; cursor .; claude'
+alias claude-work-focus='cd /home/kicky/work/01-active/focus; cursor .; claude'
+alias claude-work-woodcraft='cd /home/kicky/work/01-active/woodcraft-mob; cursor .; claude'
+alias claude-work-template='cd /home/kicky/work/05-templates/client-boilerplate-template; cursor .; claude'
+
+# Gemini aliases - Dev folder projects
+alias gemini-work-sepa='cd /home/kicky/dev/sepa && gemini'
+alias gemini-work-sepa-hausfabrik='cd /home/kicky/dev/sepa/hausfabrik; cursor .; gemini'
+alias gemini-work-sepa-thelia-react='cd /home/kicky/dev/sepa/thelia-react; cursor .; gemini'
+alias gemini-work-sepa-kubernetes-fastapi='cd /home/kicky/dev/sepa/kubernetes-fastapi; cursor .; gemini'
+alias gemini-work-scenextras='cd /home/kicky/dev/sceneXtras; cursor .; gemini'
+alias gemini-work-claude-hooks='cd /home/kicky/dev/claude-hooks; cursor .; gemini'
+
+# Gemini aliases - Work folder projects
+alias gemini-work-windows-draft='cd /home/kicky/work/01-active/windows-draft; cursor .; gemini'
+alias gemini-work-flo='cd /home/kicky/work/01-active/Flo-manager/flo_lets_fit; cursor .; gemini'
+alias gemini-work-clinic='cd /home/kicky/work/01-active/clinic-scheduler; cursor .; gemini'
+alias gemini-work-devfusion='cd /home/kicky/work/01-active/devfusion-portfolio; cursor .; gemini'
+alias gemini-work-focus='cd /home/kicky/work/01-active/focus; cursor .; gemini'
+alias gemini-work-woodcraft='cd /home/kicky/work/01-active/woodcraft-mob; cursor .; gemini'
+alias gemini-work-template='cd /home/kicky/work/05-templates/client-boilerplate-template; cursor .; gemini'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -237,3 +267,13 @@ alias pip='pip3'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias claude="/home/kicky/.claude/local/claude"
+
+# Monitor switching aliases (INSTANT with gdctl)
+alias m0='~/bin/monitors/gdctl-instant.py DP-2'
+alias m1='~/bin/monitors/gdctl-instant.py DP-4'
+alias m3='~/bin/monitors/gdctl-instant.py triple'
+alias mlist='~/bin/monitors/gdctl-instant.py show'
+alias mshow='gdctl show'
+alias mreset='~/bin/monitors/monitors-reset'
