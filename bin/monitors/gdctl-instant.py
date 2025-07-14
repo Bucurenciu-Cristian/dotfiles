@@ -50,6 +50,26 @@ def run_command(cmd, show_output=False):
         print(f"Error running command: {e}", file=sys.stderr)
         return False, "", str(e)
 
+def get_connected_monitors():
+    """Get list of currently connected monitors from gdctl"""
+    success, output, _ = run_command("gdctl show")
+    if not success:
+        return set()
+    
+    connected = set()
+    lines = output.split('\n')
+    
+    for line in lines:
+        # Look for monitor lines like "├──Monitor DP-2 (ASUSTek COMPUTER INC 34")"
+        if '──Monitor ' in line and '(' in line:
+            # Extract monitor ID (e.g., "DP-2", "eDP-1")
+            parts = line.split('Monitor ')
+            if len(parts) > 1:
+                monitor_id = parts[1].split(' ')[0]
+                connected.add(monitor_id)
+    
+    return connected
+
 def backup_config():
     """Save current configuration to backup"""
     backup_dir = Path.home() / "bin" / "monitors" / "configs"
@@ -69,6 +89,20 @@ def switch_to_single_monitor(monitor_id, with_backup=True, verbose=True):
     """Switch to single monitor using gdctl"""
     if monitor_id not in MONITORS:
         print(f"❌ Unknown monitor: {monitor_id}")
+        return False
+    
+    # Safety check: Verify monitor is actually connected
+    connected_monitors = get_connected_monitors()
+    if monitor_id not in connected_monitors:
+        monitor = MONITORS[monitor_id]
+        print(f"❌ Monitor {monitor_id} ({monitor['name']}) is not connected!")
+        
+        if len(connected_monitors) == 1 and 'eDP-1' in connected_monitors:
+            print("ℹ️  You appear to be on laptop-only mode (away from home setup)")
+        else:
+            print(f"ℹ️  Currently connected monitors: {', '.join(sorted(connected_monitors))}")
+        
+        print("💡 Use 'available' command to see only connected monitors")
         return False
     
     monitor = MONITORS[monitor_id]
@@ -120,10 +154,69 @@ def list_available_monitors():
         print(f"   Vendor: {monitor['vendor']}, Product: {monitor['product']}")
         print()
 
+def show_available_monitors():
+    """Show only currently connected monitors"""
+    connected_monitors = get_connected_monitors()
+    
+    if not connected_monitors:
+        print("❌ No monitors detected!")
+        return
+    
+    print("Currently connected monitors:")
+    print("=" * 50)
+    
+    for monitor_id in sorted(connected_monitors):
+        if monitor_id in MONITORS:
+            monitor = MONITORS[monitor_id]
+            print(f"✅ {monitor_id}: {monitor['name']}")
+            print(f"   {monitor['description']}")
+            print(f"   Vendor: {monitor['vendor']}, Product: {monitor['product']}")
+        else:
+            print(f"⚠️  {monitor_id}: Unknown monitor (not in configuration)")
+        print()
+    
+    # Show environment context
+    if len(connected_monitors) == 1 and 'eDP-1' in connected_monitors:
+        print("🏠 Environment: Laptop-only mode (away from home setup)")
+    elif {'DP-2', 'DP-3', 'DP-4'}.issubset(connected_monitors):
+        print("🏠 Environment: Full home setup (all external monitors connected)")
+    else:
+        external_count = len(connected_monitors - {'eDP-1'})
+        print(f"🏠 Environment: Partial setup ({external_count} external monitor(s) connected)")
+    
+    print()
+    print("Available commands:")
+    for monitor_id in sorted(connected_monitors):
+        if monitor_id in MONITORS:
+            monitor = MONITORS[monitor_id]
+            print(f"  {monitor_id.lower().replace('-', '')} - Switch to {monitor['name']}")
+    
+    if {'DP-2', 'DP-3', 'DP-4'}.issubset(connected_monitors):
+        print(f"  triple - Custom triple monitor layout")
+
 def restore_triple_monitor():
     """Restore custom triple monitor configuration with optimal layout and refresh rates"""
     print("🔄 Restoring custom triple monitor setup...")
     print("   Layout: LG Portrait (left) | Iiyama 180Hz (top-right) | ASUS 100Hz (bottom-right)")
+    
+    # Safety check: Verify all 3 external monitors are connected
+    connected_monitors = get_connected_monitors()
+    required_monitors = {'DP-2', 'DP-3', 'DP-4'}
+    missing_monitors = required_monitors - connected_monitors
+    
+    if missing_monitors:
+        print(f"❌ Triple monitor setup requires all 3 external monitors!")
+        print(f"   Missing monitors: {', '.join(sorted(missing_monitors))}")
+        
+        if len(connected_monitors) == 1 and 'eDP-1' in connected_monitors:
+            print("ℹ️  You appear to be on laptop-only mode (away from home setup)")
+        else:
+            print(f"ℹ️  Currently connected: {', '.join(sorted(connected_monitors))}")
+            available_external = connected_monitors - {'eDP-1'}
+            if available_external:
+                print(f"💡 Try single monitor mode with: {', '.join(sorted(available_external))}")
+        
+        return False
     
     # Backup current config
     backup_config()
@@ -151,6 +244,8 @@ def restore_triple_monitor():
 def main():
     """Main entry point"""
     if len(sys.argv) < 2:
+        connected_monitors = get_connected_monitors()
+        
         print("GNOME Instant Monitor Switcher (gdctl)")
         print("=" * 40)
         print("Usage: gdctl-instant.py <command>")
@@ -161,11 +256,27 @@ def main():
         print("  eDP-1      - Switch to laptop display only")
         print("  show       - Show current configuration")
         print("  list       - List all available monitors")
+        print("  available  - Show only connected monitors")
         print("  triple     - Restore triple monitor setup")
+        
+        # Show current environment context
+        if connected_monitors:
+            print("\n" + "=" * 40)
+            if len(connected_monitors) == 1 and 'eDP-1' in connected_monitors:
+                print("🏠 Current: Laptop-only mode (away from home)")
+                print("💡 Only 'eDP-1' command will work in this setup")
+            elif {'DP-2', 'DP-3', 'DP-4'}.issubset(connected_monitors):
+                print("🏠 Current: Full home setup (all monitors connected)")
+                print("💡 All commands available")
+            else:
+                available_external = connected_monitors - {'eDP-1'}
+                print(f"🏠 Current: Partial setup ({len(available_external)} external monitor(s))")
+                print(f"💡 Working commands: {', '.join(sorted(connected_monitors))}")
+        
         print("\nExamples:")
-        print("  gdctl-instant.py DP-2    # Switch to ASUS (instant)")
-        print("  gdctl-instant.py show    # Show current config")
-        print("  gdctl-instant.py triple  # Restore all monitors")
+        print("  gdctl-instant.py DP-2      # Switch to ASUS (instant)")
+        print("  gdctl-instant.py available # Show only connected monitors")
+        print("  gdctl-instant.py triple    # Restore all monitors (home only)")
         sys.exit(1)
     
     command = sys.argv[1]
@@ -174,6 +285,8 @@ def main():
         show_current_config()
     elif command == "list":
         list_available_monitors()
+    elif command == "available":
+        show_available_monitors()
     elif command == "triple":
         restore_triple_monitor()
     elif command in MONITORS:
@@ -182,7 +295,8 @@ def main():
             sys.exit(1)
     else:
         print(f"❌ Unknown command: {command}")
-        print("Run without arguments to see available commands")
+        print("💡 Run without arguments to see available commands")
+        print("💡 Use 'available' to see only connected monitors")
         sys.exit(1)
 
 if __name__ == "__main__":
