@@ -13,7 +13,7 @@ after-login-command = []
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
-    'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=1.0',
+    'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color=0xFFFFBE69 inactive_color=0xFF007692 width=8.0',
 ]
 
 # Start AeroSpace at login
@@ -46,7 +46,7 @@ key-mapping.preset = 'qwerty'
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 # on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-# on-focus-changed = "move-mouse window-lazy-center"
+on-focus-changed = ['move-mouse window-lazy-center']
 # Gaps between windows (inner-*) and between monitor edges (outer-*).
 # Possible values:
 # - Constant:     gaps.outer.top = 8
@@ -169,19 +169,53 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+# on-window-detected callbacks
+# Available conditions:
+#   if.app-id: Application ID exact match
+#   if.app-name-regex-substring: Application name case insensitive regex substring
+#   if.window-title-regex-substring: Window title case insensitive regex substring
+#   if.workspace: Window's workspace name exact match
+#   if.during-aerospace-startup: true/false - run only during startup or not during startup
+#   check-further-callbacks: true/false - continue processing other rules after this one matches
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.window-title-regex-substring = 'Claude'
+run = 'move-node-to-workspace 2-CLAUDE'
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = 'move-node-to-workspace 6-Terminal'
 
 [[on-window-detected]]
+if.app-id = 'com.apple.Terminal'
+run = 'move-node-to-workspace 6-Terminal'
+
+[[on-window-detected]]
+if.app-id = 'com.googlecode.iterm2'
+run = 'move-node-to-workspace 6-Terminal'
+
+[[on-window-detected]]
 if.app-id = 'dev.zed.Zed'
+run = 'move-node-to-workspace 4-IDE'
+
+# Cursor
+[[on-window-detected]]
+if.app-id = 'com.todesktop.230313mzl4w4u92'
 run = 'move-node-to-workspace 4-IDE'
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefox'
-if.window-title-regex-substring = 'whatsapp'
+if.window-title-regex-substring = 'whatsapp|teams|gmail'
 run = 'move-node-to-workspace 7-SOCIAL'
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+if.window-title-regex-substring = 'tasks|calendar'
+run = 'move-node-to-workspace 9-TASKS'
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefox'
