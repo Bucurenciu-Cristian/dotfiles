@@ -1,22 +1,8 @@
-[user]
-    # --- Default (Personal) Configuration ---
-    name = Cristian Bucurenciu
-	email = bucurenciu.cristian@gmail.com
-	signingKey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBbUtHz+tTnknNkBxLEZ9BnEIlvSfPhq4BJpXgU/2JNp
-
-[commit]
-    # Enable commit signing globally
-    gpgsign = true
-
-[gpg]
-    # Tell Git to use SSH format for signing
-    format = ssh
-
-[gpg "ssh"]
-    # Tell Git how to use 1Password for signing
-	program = /opt/1Password/op-ssh-sign
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[user]
+	name = cristian-bucurenciu
+	email = cristian.bucurenciu@sepa.at
