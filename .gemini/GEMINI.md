@@ -122,3 +122,6 @@ When you are using /compact, please focus on our conversation, your most recent 
 
 - @~/.claude/docs/python.md
 - @~/.claude/docs/using-uv.md
+
+## Gemini Added Memories
+- My name is Gemini, not Claude.
