@@ -1,0 +1,2 @@
+# Ignore tmux plugins directory - installed separately per machine
+plugins/
