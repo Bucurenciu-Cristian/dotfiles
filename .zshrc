@@ -28,10 +28,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
@@ -79,18 +79,19 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  docker
-  node
-  dnf
-  bun
-  systemd
-  colored-man-pages
   zsh-syntax-highlighting
   zsh-autosuggestions
-  z
-  uv
-  pre-commit
 )
+
+  # docker
+  # node
+  # dnf
+  # bun
+  # systemd
+  # colored-man-pages
+  # z
+  # uv
+  # pre-commit
 
 source $ZSH/oh-my-zsh.sh
 
@@ -108,12 +109,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# pnpm configuration
-export PNPM_HOME="/home/kicky/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
 
 # Editor configuration
 export EDITOR="cursor"
@@ -124,6 +119,11 @@ export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
 # Project aliases (from bashrc)
 alias claude-mcp-settings='zed ~/.claude/settings.local.json'
+# Disable GNOME auto brightness
+alias disable_autobrightness="gsettings set org.gnome.settings-daemon.plugins.power ambient-enabled false"
+
+# Disable GNOME idle dimming
+alias disable_idledim="gsettings set org.gnome.settings-daemon.plugins.power idle-dim false"
 
 # Dev folder projects
 alias claude-work-sepa='cd /home/kicky/dev/sepa && claude'
@@ -261,6 +261,9 @@ alias install='sudo dnf install'
 alias python='python3'
 alias pip='pip3'
 
+# Neptun booking script
+alias neptun='cd "/home/kicky/work/06-resources/Script Neptun" && make run'
+
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -268,11 +271,32 @@ alias pip='pip3'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-alias claude="/home/kicky/.claude/local/claude"
-
 # Monitor switching aliases (INSTANT with gdctl)
 alias m0='~/bin/monitors/gdctl-instant.py DP-2'
 alias m1='~/bin/monitors/gdctl-instant.py DP-4'
 alias m3='~/bin/monitors/gdctl-instant.py triple'
 alias mavailable='~/bin/monitors/gdctl-instant.py available'
 alias mshow='~/bin/monitors/gdctl-instant.py show'
+alias mswitch='~/bin/monitors/monitor-switch.py'      # Interactive CLI (any monitors)
+
+alias claude="/home/kicky/.claude/local/claude"
+
+export PATH="$HOME/.local/bin:$PATH"
+export API_TIMEOUT_MS=600000
+export ELEVENLABS_API_KEY=sk_6ead0399a7cd24c931b0bd2c09363fa3f5c08ab30eee20a7
+export ENGINEER_NAME=Cristian
+export FIRECRAWL_API_KEY=fc-7546dde77b5846df8e74016aa8973750
+
+# pnpm
+export PNPM_HOME="/home/kicky/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# Opcode - built from source
+alias opcode='/home/kicky/dev/opcode/src-tauri/target/release/opcode'
+
+# Ctrl-f launches tmux-sessionizer
+bindkey -s '^F' 'tmux-sessionizer\n'

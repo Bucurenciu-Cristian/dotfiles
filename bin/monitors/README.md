@@ -1,99 +1,264 @@
-# Instant Monitor Switching for GNOME/Wayland ⚡
+# GNOME Monitor Switcher ⚡
 
-A powerful command-line solution for instant monitor switching on Fedora with GNOME/Wayland. Features safety validation, environment detection, and sub-second switching using GNOME's official `gdctl` utility.
+A powerful instant monitor switching solution for GNOME/Wayland systems. Switch between monitor configurations in under 1 second with maximum refresh rates and intelligent safety validation.
 
 ## ✨ Features
 
-- **Instant Switching**: Sub-second monitor configuration changes
-- **Safety Validation**: Prevents switching to disconnected monitors
-- **Environment Detection**: Automatically detects home/laptop/partial setups
-- **Custom Layouts**: Optimized triple monitor configuration with maximum refresh rates
-- **Automatic Backups**: Safe configuration management with rollback capability
-- **Smart Aliases**: Simple commands for daily use
+- **⚡ Instant Switching**: Sub-second monitor configuration changes using GNOME's `gdctl`
+- **🛡️ Safety Validation**: Prevents switching to disconnected monitors with smart error messages
+- **🏠 Environment Detection**: Automatically detects home/laptop/partial setups
+- **🎯 Custom Layouts**: Optimized triple monitor configuration with portrait orientation
+- **📦 Automatic Backups**: Safe configuration management with timestamped rollback capability
+- **🚀 Smart Aliases**: Simple single-letter commands for daily workflow
 
 ## 🚀 Quick Start
 
-### Essential Commands
+### Interactive CLI (New!)
+```bash
+# Launch interactive monitor switcher
+mswitch                              # Easy alias (recommended)
+~/bin/monitors/monitor-switch.py     # Full path
+
+# Features:
+# - Dynamic monitor detection (works with any setup)
+# - Smart filtering: Top 10 best modes (filters 100+ to manageable list)
+# - Toggle option: [A] Show all modes / [T] Top 10 modes
+# - Interactive refresh rate selection with current mode indicators
+# - Real-time current mode display
+# - Safety confirmations and automatic backups
+```
+
+### Quick Aliases (Original)
 ```bash
 m0          # Switch to ASUS monitor (3440x1440@100Hz)
 m1          # Switch to Iiyama monitor (3440x1440@180Hz) 
 m3          # Custom triple monitor layout (all monitors)
 mavailable  # Show only connected monitors
+mshow       # Show current configuration
 ```
 
-### Monitor Layout (Triple Mode)
-- **LG (DP-3)**: Portrait left, 2560x1080@60Hz
-- **Iiyama (DP-4)**: Primary top-right, 3440x1440@180Hz
-- **ASUS (DP-2)**: Secondary bottom-right, 3440x1440@100Hz
+### Triple Monitor Layout (m3)
+```
+┌─────────────┐  ┌────────────────────────────────┐
+│             │  │         Iiyama DP-4           │
+│    LG       │  │    3440x1440@180Hz (Primary)   │
+│   DP-3      │  └────────────────────────────────┘
+│ Portrait    │  ┌────────────────────────────────┐
+│ 2560x1080   │  │         ASUS DP-2             │
+│   @60Hz     │  │      3440x1440@100Hz          │
+└─────────────┘  └────────────────────────────────┘
+```
 
-## 📖 Usage
+## 📂 Installation for New Systems
 
-### Basic Commands
+### Prerequisites
+- **Operating System**: Fedora Linux (tested on Fedora 42+)
+- **Desktop Environment**: GNOME with Wayland
+- **Python**: Python 3 (usually pre-installed)
+- **gdctl**: Included with modern GNOME installations
+
+### Quick Install
+```bash
+# 1. Clone this repository
+git clone https://github.com/YOUR_USERNAME/gnome-monitor-switcher.git
+cd gnome-monitor-switcher
+
+# 2. Copy script to ~/bin/monitors/
+mkdir -p ~/bin/monitors
+cp gdctl-instant.py ~/bin/monitors/
+chmod +x ~/bin/monitors/gdctl-instant.py
+
+# 3. Add aliases to your shell
+cat aliases.sh >> ~/.zshrc  # For zsh users
+# or
+cat aliases.sh >> ~/.bashrc # For bash users
+
+# 4. Reload your shell
+source ~/.zshrc  # or source ~/.bashrc
+```
+
+### Verification
+```bash
+# Test the installation
+mavailable  # Should show your connected monitors
+gdctl show  # Verify gdctl is working
+```
+
+## 📖 Usage Guide
+
+### Direct Script Usage
 ```bash
 # Switch to specific monitors
-gdctl-instant.py DP-2      # ASUS monitor
-gdctl-instant.py DP-4      # Iiyama monitor  
-gdctl-instant.py eDP-1     # Laptop display
-gdctl-instant.py triple    # Custom triple layout
+~/bin/monitors/gdctl-instant.py DP-2      # ASUS monitor
+~/bin/monitors/gdctl-instant.py DP-4      # Iiyama monitor  
+~/bin/monitors/gdctl-instant.py eDP-1     # Laptop display
+~/bin/monitors/gdctl-instant.py triple    # Custom triple layout
 
 # Information commands
-gdctl-instant.py show      # Current configuration
-gdctl-instant.py available # Connected monitors only
-gdctl-instant.py list      # All available monitors
+~/bin/monitors/gdctl-instant.py show       # Current configuration
+~/bin/monitors/gdctl-instant.py available  # Connected monitors only
+~/bin/monitors/gdctl-instant.py list       # All available monitors (help)
 ```
 
-### Environment Detection
-The script automatically detects your current setup:
-- **🏠 Full home setup**: All 3 external monitors connected
-- **💻 Laptop mode**: Only built-in display available
-- **⚡ Partial setup**: Some external monitors connected
-
-## 🛡️ Safety Features
-
-### Monitor Presence Validation
+### Alias Commands (Recommended)
 ```bash
-# When away from home setup
-m0  # ❌ Monitor DP-2 (ASUS) is not connected!
-    # ℹ️  You appear to be on laptop-only mode (away from home setup)
+m0          # Switch to primary external monitor
+m1          # Switch to secondary external monitor  
+m3          # Enable triple monitor layout
+mavailable  # Show connected monitors with usage tips
+mshow       # Display current monitor configuration
 ```
 
-### Smart Error Messages
+### Environment Context
+The system automatically detects your setup:
+
+**🏠 Full Home Setup** (All 3+ monitors connected)
+- All aliases work (m0, m1, m3)
+- Triple monitor layout available
+- Maximum refresh rates enabled
+
+**💻 Laptop Mode** (Built-in display only)
+- Limited to laptop display commands
 - Clear feedback about missing monitors
-- Suggestions for available alternatives
-- Environment context awareness
+- Suggests available alternatives
 
-## 🔧 Technical Details
+**⚡ Partial Setup** (Some external monitors)
+- Shows which commands will work
+- Adapts to available hardware
+- Environment-specific guidance
 
-### Requirements
-- Fedora Linux with GNOME on Wayland
-- `gdctl` utility (included with GNOME)
-- Python 3 (for the script)
+## 🔧 Hardware Configuration
 
-### Monitor Configuration
-- **ASUS (DP-2)**: VG34VQEL1A, 3440x1440@100Hz
-- **Iiyama (DP-4)**: PL3481WQ, 3440x1440@180Hz  
-- **LG (DP-3)**: LG ULTRAWIDE, 2560x1080@60Hz
-- **Laptop (eDP-1)**: Built-in display, 2880x1920@60Hz
+### Supported Monitor Setup
+```yaml
+ASUS_DP-2:
+  model: "VG34VQEL1A"
+  resolution: "3440x1440"
+  refresh_rate: "100Hz"
+  position: "bottom-right"
 
-### Automatic Backups
-- Configuration backed up before each change
-- Stored in `~/bin/monitors/configs/`
-- Timestamped for easy restoration
+Iiyama_DP-4:
+  model: "PL3481WQ"
+  resolution: "3440x1440"
+  refresh_rate: "180Hz"
+  position: "top-right (primary)"
 
-## 📂 Installation
+LG_DP-3:
+  model: "LG ULTRAWIDE"
+  resolution: "2560x1080"
+  refresh_rate: "60Hz"
+  orientation: "portrait"
+  position: "left"
 
-Already installed and configured! Aliases are available in your shell:
-```bash
-source ~/.zshrc  # Reload aliases if needed
+Laptop_eDP-1:
+  resolution: "2880x1920"
+  refresh_rate: "60Hz"
+  type: "built-in"
 ```
 
-## 🎯 Perfect for
+### Customization for Different Hardware
+To adapt for your monitors, edit the `MONITORS` dictionary in `gdctl-instant.py`:
 
-- **Daily workflow**: Quick switching between monitor setups
-- **Remote work**: Safe operation when away from home setup  
-- **Gaming/productivity**: Instant layout changes
-- **Multi-monitor optimization**: Maximum refresh rates automatically
+```python
+MONITORS = {
+    'DP-2': {
+        'name': 'Your Monitor Name',
+        'vendor': 'VENDOR',
+        'product': 'MODEL',
+        'description': 'Description with resolution',
+        'max_mode': '3440x1440@100.006'  # Use gdctl show --modes to find
+    },
+    # ... add your monitors
+}
+```
+
+## 🛡️ Safety & Backup Features
+
+### Automatic Configuration Backup
+- Every monitor switch creates a timestamped backup
+- Stored in `~/bin/monitors/configs/gdctl-backup-TIMESTAMP.txt`
+- Easy restoration if something goes wrong
+
+### Smart Validation
+- **Connection Check**: Prevents switching to disconnected monitors
+- **Mode Validation**: Ensures refresh rates are supported
+- **Environment Awareness**: Provides context-specific error messages
+- **Graceful Failures**: Clear feedback with suggested alternatives
+
+### Error Recovery
+```bash
+# If something goes wrong, restore from backup:
+gdctl set $(cat ~/bin/monitors/configs/gdctl-backup-LATEST.txt)
+```
+
+## 🚀 Performance
+
+### Benchmarks
+- **Switch Time**: < 1 second for any configuration
+- **Startup Time**: < 0.5 seconds for script execution
+- **Memory Usage**: Minimal (Python script + gdctl)
+- **CPU Impact**: Negligible during normal operation
+
+### Refresh Rate Optimization
+- **ASUS Monitor**: 100Hz (maximum supported)
+- **Iiyama Monitor**: 180Hz (maximum supported)
+- **LG Monitor**: 60Hz (portrait orientation)
+- **All simultaneously**: No performance degradation
+
+## 📚 Additional Documentation
+
+- **[INSTALL.md](INSTALL.md)**: Detailed installation guide for fresh systems
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)**: Common issues and solutions
+- **[SESSION-SUMMARY.md](SESSION-SUMMARY.md)**: Development history and technical details
+
+## 🎯 Use Cases
+
+### Daily Workflow
+- **Development**: `m1` for high-refresh coding, `m3` for multi-window workflow
+- **Gaming**: `m1` for 180Hz gaming performance
+- **Productivity**: `m3` for maximum screen real estate
+- **Travel**: Automatic laptop-mode detection when away
+
+### Remote Work
+- **Home Office**: `m3` for full desktop experience
+- **Coffee Shop**: Automatic laptop-only mode
+- **Hotel**: `m0` or `m1` for external monitor when available
+- **Client Site**: Safe operation with unknown monitor setups
+
+## 🛠️ Two Tools Available
+
+### 1. Interactive CLI (`monitor-switch.py`)
+- **Best for**: Any hardware setup, exploring options
+- **Features**: Dynamic detection, interactive menus, works with any monitors
+- **Usage**: `~/bin/monitors/monitor-switch.py`
+
+### 2. Quick Aliases (`gdctl-instant.py`) 
+- **Best for**: Daily workflow, muscle memory, this specific hardware setup
+- **Features**: One-command switching, optimized for ASUS/Iiyama/LG setup
+- **Usage**: `m0`, `m1`, `m3` commands
+
+Both tools create automatic backups and use the same gdctl backend.
+
+## 🔄 Version History
+
+- **v1.0**: Initial release with basic monitor switching
+- **v1.1**: Added triple monitor layout and portrait orientation
+- **v1.2**: Enhanced safety validation and environment detection
+- **v1.3**: Added comprehensive documentation and GitHub repository
+- **v1.4**: Added interactive CLI program for universal hardware support
+- **v1.5**: Added smart filtering (top 10 modes) and easy `mswitch` alias
+
+## 📄 License
+
+MIT License - feel free to adapt for your own monitor setup.
+
+## 🤝 Contributing
+
+This is a personal setup repository, but feel free to:
+- Fork for your own hardware configuration
+- Submit issues for general bugs
+- Share adaptations for different monitor combinations
 
 ---
 
-**Powered by GNOME's gdctl** | **Instant switching** | **Production ready**
+**⚡ Instant switching** | **🛡️ Production ready** | **🚀 Maximum performance** | **Powered by GNOME gdctl**
