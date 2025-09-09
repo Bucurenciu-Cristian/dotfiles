@@ -1,0 +1,38 @@
+{
+  "cleanupPeriodDays": 45,
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_ENABLE_UNIFIED_READ_TOOL": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "DISABLE_TELEMETRY": "1",
+    "ENABLE_BACKGROUND_TASKS": "1"
+  },
+  "hooks": {},
+  "includeCoAuthoredBy": false,
+  "model": "opusplan",
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__serena__replace_regex",
+      "mcp__serena__activate_project",
+      "mcp__serena__read_file",
+      "mcp__serena__search_for_pattern",
+      "mcp__serena__think_about_collected_information",
+      "mcp__serena__think_about_whether_you_are_done",
+      "mcp__serena__write_memory",
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__browser-tools__getConsoleLogs",
+      "mcp__browser-tools__getConsoleErrors",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs"
+    ],
+    "deny": []
+  },
+  "statusLine": {
+    "command": "bun x ccusage statusline --visual-burn-rate emoji",
+    "padding": 0,
+    "type": "command"
+  }
+}
